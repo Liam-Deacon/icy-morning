@@ -1,0 +1,5 @@
+pytest
+prospector
+bandit
+flake8
+pycodestyle
