@@ -1,0 +1,4 @@
+fastapi[all]==0.77.1
+fastapi-async-sqlalchemy==0.3.11
+magnum==14.0.0
+uvicorn==0.17.6
