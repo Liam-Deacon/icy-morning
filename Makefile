@@ -16,7 +16,7 @@ poetry:
 
 clean:
 	rm -rf venv
-	rm db.sqlite
+	rm -f db.sqlite
 
 venv:
 	pyenv install $(PYTHON_VERSION)
@@ -39,11 +39,11 @@ install-dev:
 
 .PHONY: lint
 lint:
-	pylint *.py
+	pylint app
 	
 .PHONY: serve
 serve:
-	uvicorn main:app --reload
+	uvicorn app.api.main_app:app --reload
 
 .PHONY: test
 test:
