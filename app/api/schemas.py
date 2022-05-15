@@ -24,10 +24,11 @@ class _AnalystBaseSchema(BaseSchema):
 
 
 #: Define alias for more explicit meaning when exported for use in REST API.
-AnalystInputSchema = _AnalystBaseSchema
+class AnalystInputSchema(_AnalystBaseSchema):
+    ...
 
 
-class AnalystSchema(_AnalystPrimaryKeySchema, _AnalystBaseSchema):
+class AnalystSchema(_AnalystBaseSchema, _AnalystPrimaryKeySchema):
     """Complete model representing an analyst."""
 
 
@@ -49,9 +50,10 @@ class _AssetBaseSchema(BaseSchema):
 
 
 #: Define alias for more explicit meaning when exported for use in REST API.
-AssetInputSchema = _AssetBaseSchema
+class AssetInputSchema(_AssetBaseSchema):
+    ...
 
 
-class AssetSchema(_AssetPrimaryKeySchema, _AssetBaseSchema):
+class AssetSchema(_AssetBaseSchema, _AssetPrimaryKeySchema):
     """Complete model representing an asset."""
     analyst: AnalystSchema
