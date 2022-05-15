@@ -6,6 +6,7 @@ from fastapi import FastAPI
 from fastapi_async_sqlalchemy import SQLAlchemyMiddleware, db
 
 from starlette import status
+from mangum import Mangum
 
 # NOTE: use relative imports to be compatible with uvicorn without needing a python package
 from .schemas import AnalystInputSchema, AssetInputSchema, AssetSchema, AnalystSchema
@@ -23,7 +24,6 @@ setup_database(sqlalchemy_connection_string)
 app = FastAPI(title="Icy Morning REST API")
 
 app.add_middleware(SQLAlchemyMiddleware, db_url=sqlalchemy_connection_string)
-
 
 api_prefix = '/api/v1'
 
@@ -109,3 +109,18 @@ async def delete_analyst(analyst_id: int):
     """Delete analyst from database."""
     analyst = await analysts_repo.delete(analyst_id)
     return analyst
+
+
+
+@app.post(f'{api_prefix}/assets/subscription')
+async def subscribe_user_to_asset_events(payload: Any):
+    ...  # TODO: implement
+
+
+@app.delete(f'{api_prefix}/subscriptions/{{subscription_id}}')
+async def unsubscribe_user_from_asset_events(payload: Any):
+    ...  # TODO: implement
+
+
+#: Wrapper for AWS API Gateway
+handler: Mangum = Mangum(app)
