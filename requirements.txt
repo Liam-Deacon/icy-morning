@@ -3,3 +3,5 @@ fastapi-async-sqlalchemy==0.3.11
 magnum==14.0.0
 uvicorn==0.17.6
 aiosqlite==0.17.0
+sqlalchemy-utils==0.38.2
+loguru==0.6.0
