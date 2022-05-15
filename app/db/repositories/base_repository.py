@@ -48,7 +48,7 @@ class BaseRepository(Generic[InSchema, Schema, Table], metaclass=abc.ABCMeta):
         return entry
 
     def _get_pkey_col(self) -> str:
-        return "id"
+        return getattr(self, 'id', 'id')
 
     async def create(self, input_schema: InSchema) -> Schema:
         """Creates a new database row entry using `InSchema`."""

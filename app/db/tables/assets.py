@@ -2,10 +2,8 @@
 import datetime
 
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Date
-from sqlalchemy.orm import relationship
 
 from app.db.tables.base import BaseModel
-from app.db.tables.analysts import AnalystModel
 
 
 class AssetModel(BaseModel):
@@ -19,4 +17,4 @@ class AssetModel(BaseModel):
     analyst_id = Column(Integer, ForeignKey("analysts.id"))
     is_active = Column(Boolean)
 
-    # analyst = relationship(AnalystModel)
+    # analyst = sqlalchemy.orm.relationship(AnalystModel)

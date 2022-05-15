@@ -7,20 +7,24 @@ import pydantic
 import pydantic.main
 
 
-class BaseSchema(pydantic.main.BaseModel):
+class BaseSchema(pydantic.main.BaseModel):  # pylint: disable=I1101
     """Base model class with desired common config."""
+
     class Config:
         """Common configuration."""
+
         orm_mode = True
 
 
 class _AnalystPrimaryKeySchema(BaseSchema):
     """Primary key schema fragment for analyst models."""
+
     analyst_id: int = pydantic.Field(alias='id')
 
 
 class _AnalystBaseSchema(BaseSchema):
     """Model representing an analyst which acts one or more assets."""
+
     name: str
     company: str
 
@@ -28,7 +32,6 @@ class _AnalystBaseSchema(BaseSchema):
 #: Define alias for more explicit meaning when exported for use in REST API.
 class AnalystInputSchema(_AnalystBaseSchema):
     """Schema for representing Analyst input data model."""
-    ...
 
 
 class AnalystSchema(_AnalystBaseSchema, _AnalystPrimaryKeySchema):
@@ -46,6 +49,7 @@ class _AssetPrimaryKeySchema(BaseSchema):
 
 class _AssetBaseSchema(BaseSchema):
     """Model representing common attributes of an asset."""
+
     name: str
     description: Optional[str] = None
     inception_date: DateType = datetime.date.today()  # TODO: check whether time part is required
@@ -56,7 +60,6 @@ class _AssetBaseSchema(BaseSchema):
 #: Define alias for more explicit meaning when exported for use in REST API.
 class AssetInputSchema(_AssetBaseSchema):
     """Schema for representing asset input data model."""
-    ...
 
 
 class AssetSchema(_AssetBaseSchema, _AssetPrimaryKeySchema):

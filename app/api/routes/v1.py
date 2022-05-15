@@ -104,7 +104,5 @@ async def subscribe_user_to_asset_events(payload: Any):
 
 
 @api_v1_router.delete('/subscriptions/{subscription_id}')
-async def unsubscribe_user_from_asset_events(payload: Any):
+async def unsubscribe_user_from_asset_events():
     ...  # TODO: implement
-
-

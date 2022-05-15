@@ -1,7 +1,7 @@
 """Convenience entrypoint for starting REST API using `python -m app`."""
 import uvicorn
 
-from .api.routes import app
+from .api.main_app import app
 
 
 if __name__ == "__main__":

@@ -26,4 +26,4 @@ def setup_database(url: str) -> None:
     if not database_exists(sanitised_url) or is_in_memory_database(sanitised_url):
         logger.debug(f'Creating database {sanitised_url!r}...')
         create_database(sanitised_url)
-    BaseModel.metadata.create_all(engine, checkfirst=True)
+    BaseModel.metadata.create_all(engine, checkfirst=True)  # pylint: disable=E1101

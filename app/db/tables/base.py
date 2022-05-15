@@ -10,6 +10,7 @@ class BaseModel:
     __name__: str
 
     @declared_attr
-    def __tablename__(cls) -> str:  # noqa: N805; noqa: E0213
+    @classmethod
+    def __tablename__(cls) -> str:  # noqa: N805,E0213
         """Defines the SQLAlchemy table name as the lowercase representation of the class itself."""
         return re.sub('model$', '', cls.__name__.lower())
