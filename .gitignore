@@ -34,3 +34,8 @@ build/
 __pycache__/*
 *.pyc
 venv
+
+db.sqlite
+
+# VS Code
+.vscode
