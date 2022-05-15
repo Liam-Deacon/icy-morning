@@ -8,6 +8,14 @@ Repository to showcase a cloud engineering project bringing together a simple Fa
 
 TODO
 
+Start by navigating into the `terraform/` directory and performing the following commands:
+
+```bash
+terraform
+```
+
+For deployment...
+
 ## Development
 
 ### Prerequisites
@@ -15,16 +23,14 @@ TODO
 You will need the following installed within your development environment.
 
 1. Python 3.10
-2. Terraform 1.17
-3. Terragrunt
+2. Terrform CLI
 
 ### Setup
 
-TODO
+...
 
 ## TODO:
 
-- [ ] Add instructions to README
 - [ ] Implement authentication using SSO and JWT
 - [ ] Send an email notification / allow subscription to Asset creation events
 - [ ] Use `alembic` for handling database migrations
