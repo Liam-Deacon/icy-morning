@@ -4,11 +4,12 @@ Notes
 Modified from https://rogulski.it/blog/sqlalchemy-14-async-orm-with-fastapi/
 """
 import abc
-from typing import Generic, TypeVar, Type
+from typing import Generic, List, TypeVar, Type
 
 from fastapi_async_sqlalchemy import db
 from fastapi_async_sqlalchemy.middleware import DBSession
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.future import select
 
 from ..tables.base import BaseModel
 from ...api.errors import NotFoundException, ConflictException
@@ -36,8 +37,13 @@ class BaseRepository(Generic[IN_SCHEMA, SCHEMA, TABLE], metaclass=abc.ABCMeta):
     def _schema(self) -> Type[SCHEMA]:
         ...
 
+    async def fetch_all(self, **kwargs) -> List[SCHEMA]:
+        """Retrieve all rows for table within database."""
+        objs = await db.session.execute(f"""SELECT * FROM {self._table.__tablename__};""")
+        return [dict(row) for row in objs]
+
     async def _get_by_id(self, entry_id: int) -> SCHEMA:
-        entry = await db.session.execute(self._table, entry_id)
+        entry = await db.session.get(self._table, entry_id)
         if not entry:
             raise NotFoundException(
                 f"{self._table.__name__}<id:{entry_id}> does not exist"
@@ -58,14 +64,12 @@ class BaseRepository(Generic[IN_SCHEMA, SCHEMA, TABLE], metaclass=abc.ABCMeta):
             entry = await self._get_by_id(entry_id)
             return self._schema.from_orm(entry)
 
-    async def update(self, entry_id: int, schema: SCHEMA) -> SCHEMA:
+    async def update(self, entry_id: int, schema: SCHEMA | dict) -> SCHEMA:
         """Update entry in database from input schema."""
-        schema_id = getattr(schema, 'id', None)
-        if entry_id != schema_id:
-            raise ConflictException(f"Entity primary key does not match route ({schema_id} vs {entry_id})")
-        entry = self._table(**schema.dict(alias=True))
+        schema_dict = schema if isinstance(schema, dict) else schema.dict(by_alias=True)
         async with db():
-            db.session.merge(entry, load=True)
+            entry = await self._get_by_id(entry_id)
+            await db.session.merge(self._table(**schema_dict))
             await db.session.commit()
             return self._schema.from_orm(entry)
 
@@ -74,4 +78,5 @@ class BaseRepository(Generic[IN_SCHEMA, SCHEMA, TABLE], metaclass=abc.ABCMeta):
         async with db():
             entry = await self._get_by_id(entry_id)
             await db.session.delete(entry)
+            await db.session.commit()
             return self._schema.from_orm(entry)

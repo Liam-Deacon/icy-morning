@@ -34,7 +34,7 @@ analysts_repo = AnalystRepository()
 @app.get(f'{api_prefix}/assets', response_model=List[AssetSchema])
 async def get_assets():
     """Retrieves all assets."""
-    assets: List[AssetModel] = await db.session.query(AssetModel).all()
+    assets: List[AssetModel] = await assets_repo.fetch_all()
     return [AssetSchema.from_orm(asset) for asset in assets]
 
 
@@ -71,8 +71,8 @@ async def delete_asset(asset_id: int):
 @app.get(f'{api_prefix}/analysts', response_model=List[AnalystSchema])
 async def get_analysts():
     """Retrieve list of analysts."""
-    analysts: List[AnalystModel] = await db.session.query(AnalystModel).all()
-    return [AnalystSchema(analyst) for analyst in analysts]
+    analysts: List[AnalystModel] = await analysts_repo.fetch_all()
+    return [AnalystSchema(**analyst) for analyst in analysts]
 
 
 @app.post(f'{api_prefix}/analysts',
