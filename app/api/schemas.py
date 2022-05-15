@@ -2,10 +2,12 @@
 import datetime
 
 from typing import Optional, Union
+
 import pydantic
+import pydantic.main
 
 
-class BaseSchema(pydantic.BaseModel):
+class BaseSchema(pydantic.main.BaseModel):
     """Base model class with desired common config."""
     class Config:
         """Common configuration."""
@@ -25,6 +27,7 @@ class _AnalystBaseSchema(BaseSchema):
 
 #: Define alias for more explicit meaning when exported for use in REST API.
 class AnalystInputSchema(_AnalystBaseSchema):
+    """Schema for representing Analyst input data model."""
     ...
 
 
@@ -37,6 +40,7 @@ DateType = Union[datetime.date, datetime.datetime]
 
 
 class _AssetPrimaryKeySchema(BaseSchema):
+    """Mixin class providing primary key for Asset model."""
     asset_id: int = pydantic.Field(alias='id')
 
 
@@ -51,6 +55,7 @@ class _AssetBaseSchema(BaseSchema):
 
 #: Define alias for more explicit meaning when exported for use in REST API.
 class AssetInputSchema(_AssetBaseSchema):
+    """Schema for representing asset input data model."""
     ...
 
 
