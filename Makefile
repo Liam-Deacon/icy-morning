@@ -16,6 +16,7 @@ poetry:
 
 clean:
 	rm -rf venv
+	rm db.sqlite
 
 venv:
 	pyenv install $(PYTHON_VERSION)
