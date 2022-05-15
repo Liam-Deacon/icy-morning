@@ -4,7 +4,7 @@ from app.db.tables.base import BaseModel
 
 
 class AnalystModel(BaseModel):
-    __tablename__ = 'analyst'
+    __tablename__ = 'analysts'
 
     id = Column(Integer, primary_key=True, unique=True)
     name = Column(String, nullable=False)

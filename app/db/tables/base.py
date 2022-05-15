@@ -1,6 +1,8 @@
 """Provides BaseModel class for defining SQLAlchemy ORM models."""
 from sqlalchemy.ext.declarative import as_declarative, declared_attr
 
+import re
+
 
 @as_declarative()
 class BaseModel:
@@ -13,4 +15,4 @@ class BaseModel:
         Defines the SQLAlchemy table name as the 
         lowercase representation of the class itself.
         """
-        return cls.__name__.lower()
+        return re.sub('model$', '', cls.__name__.lower())
