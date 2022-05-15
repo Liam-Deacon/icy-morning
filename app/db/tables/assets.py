@@ -8,7 +8,8 @@ from app.db.tables.base import BaseModel
 
 class AssetModel(BaseModel):
     """ORM model defining an asset."""
-    __tablename__ = 'assets'
+
+    __tablename__ = "assets"
 
     id = Column(Integer, index=True, primary_key=True, unique=True)
     name = Column(String, index=True, nullable=False)

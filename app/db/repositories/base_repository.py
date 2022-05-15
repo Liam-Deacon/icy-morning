@@ -36,7 +36,9 @@ class BaseRepository(Generic[InSchema, Schema, Table], metaclass=abc.ABCMeta):
 
     async def fetch_all(self) -> List[Schema]:
         """Retrieve all rows for table within database."""
-        objs = await db.session.execute(f"""SELECT * FROM {self._table.__tablename__};""")
+        objs = await db.session.execute(
+            f"""SELECT * FROM {self._table.__tablename__};"""
+        )
         return [dict(row) for row in objs]
 
     async def _get_by_id(self, entry_id: int) -> Schema:
@@ -48,7 +50,7 @@ class BaseRepository(Generic[InSchema, Schema, Table], metaclass=abc.ABCMeta):
         return entry
 
     def _get_pkey_col(self) -> str:
-        return getattr(self, 'id', 'id')
+        return getattr(self, "id", "id")
 
     async def create(self, input_schema: InSchema) -> Schema:
         """Creates a new database row entry using `InSchema`."""
@@ -72,7 +74,9 @@ class BaseRepository(Generic[InSchema, Schema, Table], metaclass=abc.ABCMeta):
         async with db():
             _old_entry = await self._get_by_id(entry_id)
             pkey = self._get_pkey_col()
-            entry = self._table(**{**schema_dict, **{pkey: getattr(_old_entry, pkey, entry_id)}})
+            entry = self._table(
+                **{**schema_dict, **{pkey: getattr(_old_entry, pkey, entry_id)}}
+            )
             await db.session.merge(entry)
             await db.session.commit()
             return self._schema.from_orm(entry)

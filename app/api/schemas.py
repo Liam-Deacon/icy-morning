@@ -19,7 +19,7 @@ class BaseSchema(pydantic.main.BaseModel):  # pylint: disable=I1101
 class _AnalystPrimaryKeySchema(BaseSchema):
     """Primary key schema fragment for analyst models."""
 
-    analyst_id: int = pydantic.Field(alias='id')
+    analyst_id: int = pydantic.Field(alias="id")
 
 
 class _AnalystBaseSchema(BaseSchema):
@@ -44,7 +44,8 @@ DateType = Union[datetime.date, datetime.datetime]
 
 class _AssetPrimaryKeySchema(BaseSchema):
     """Mixin class providing primary key for Asset model."""
-    asset_id: int = pydantic.Field(alias='id')
+
+    asset_id: int = pydantic.Field(alias="id")
 
 
 class _AssetBaseSchema(BaseSchema):
@@ -52,7 +53,9 @@ class _AssetBaseSchema(BaseSchema):
 
     name: str
     description: Optional[str] = None
-    inception_date: DateType = datetime.date.today()  # TODO: check whether time part is required
+    inception_date: DateType = (
+        datetime.date.today()
+    )  # TODO: check whether time part is required
     is_active: bool
     analyst_id: int
 
@@ -64,5 +67,6 @@ class AssetInputSchema(_AssetBaseSchema):
 
 class AssetSchema(_AssetBaseSchema, _AssetPrimaryKeySchema):
     """Complete model representing an asset."""
+
     # FIXME: bug with pydantic.BaseModel.from_orm() method in async SQLAlchemy mode
     # analyst: AnalystSchema
