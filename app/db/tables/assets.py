@@ -19,4 +19,4 @@ class AssetModel(BaseModel):
     analyst_id = Column(Integer, ForeignKey("analysts.id"))
     is_active = Column(Boolean)
 
-    analyst = relationship(AnalystModel)
+    # analyst = relationship(AnalystModel)

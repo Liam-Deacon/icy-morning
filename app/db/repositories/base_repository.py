@@ -47,13 +47,18 @@ class BaseRepository(Generic[InSchema, Schema, Table], metaclass=abc.ABCMeta):
             )
         return entry
 
+    def _get_pkey_col(self) -> str:
+        return "id"
+
     async def create(self, input_schema: InSchema) -> Schema:
         """Creates a new database row entry using `InSchema`."""
         entry = self._table(**input_schema.dict())
         async with db():
             db.session.add(entry)
+            await db.session.flush()
+            data = self._schema.from_orm(entry)
             await db.session.commit()
-            return self._schema.from_orm(entry)
+            return data
 
     async def read(self, entry_id: int) -> Schema:
         """Retrieve entry from database as REST API schema object."""
@@ -65,8 +70,10 @@ class BaseRepository(Generic[InSchema, Schema, Table], metaclass=abc.ABCMeta):
         """Update entry in database from input schema."""
         schema_dict = schema if isinstance(schema, dict) else schema.dict(by_alias=True)
         async with db():
-            entry = await self._get_by_id(entry_id)
-            await db.session.merge(self._table(**schema_dict))
+            _old_entry = await self._get_by_id(entry_id)
+            pkey = self._get_pkey_col()
+            entry = self._table(**{**schema_dict, **{pkey: getattr(_old_entry, pkey, entry_id)}})
+            await db.session.merge(entry)
             await db.session.commit()
             return self._schema.from_orm(entry)
 

@@ -48,7 +48,7 @@ class _AssetBaseSchema(BaseSchema):
     """Model representing common attributes of an asset."""
     name: str
     description: Optional[str] = None
-    inception_date: DateType  # TODO: check whether time part is required
+    inception_date: DateType = datetime.date.today()  # TODO: check whether time part is required
     is_active: bool
     analyst_id: int
 
@@ -61,4 +61,5 @@ class AssetInputSchema(_AssetBaseSchema):
 
 class AssetSchema(_AssetBaseSchema, _AssetPrimaryKeySchema):
     """Complete model representing an asset."""
-    analyst: AnalystSchema
+    # FIXME: bug with pydantic.BaseModel.from_orm() method in async SQLAlchemy mode
+    # analyst: AnalystSchema

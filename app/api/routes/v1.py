@@ -22,13 +22,13 @@ api_v1_router = APIRouter(prefix=API_PREFIX)
 async def get_assets():
     """Retrieve all assets."""
     assets: List[AssetModel] = await assets_repo.fetch_all()
-    return [AssetSchema.from_orm(asset) for asset in assets]
+    return [AssetSchema(**asset) for asset in assets]
 
 
 @api_v1_router.post('/assets',
                     status_code=status.HTTP_201_CREATED,
                     response_model=AssetSchema)
-async def create_asset(payload: AssetSchema):
+async def create_asset(payload: AssetInputSchema):
     """Create a new asset."""
     asset = await assets_repo.create(payload)
     return asset
@@ -71,14 +71,14 @@ async def create_analyst(payload: AnalystInputSchema):
     return analyst
 
 
-@api_v1_router.get(f'/analysts/{{analyst_id}}', response_model=AnalystSchema)
+@api_v1_router.get('/analysts/{analyst_id}', response_model=AnalystSchema)
 async def get_analyst_by_id(analyst_id: int):
     """Retrieve data on a specific analyst given by `analyst_id`."""
     analyst = await analysts_repo.read(analyst_id)
     return analyst
 
 
-@api_v1_router.put(f'/analysts/{{analyst_id}}', response_model=AnalystSchema)
+@api_v1_router.put('/analysts/{analyst_id}', response_model=AnalystSchema)
 async def update_analyst(analyst_id: int, payload: AnalystSchema):
     """Update analyst information.
 
