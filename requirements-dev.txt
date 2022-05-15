@@ -1,0 +1,10 @@
+# testing
+pytest==7.1.2
+
+# linters
+prospector==1.7.7
+bandit==1.7.4
+flake8==4.0.1
+pycodestyle==2.8.0
+black==22.3.0
+pylint==2.9.5
