@@ -41,3 +41,6 @@ jobs:
 
       - name: Test
         run: make test
+        env:
+          BASIC_AUTH_USERNAME: sonic
+          BASIC_AUTH_PASSWORD: tails
