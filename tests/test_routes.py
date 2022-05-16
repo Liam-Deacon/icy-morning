@@ -1,3 +1,4 @@
+import os
 import pytest
 
 import datetime
@@ -6,16 +7,29 @@ from fastapi.testclient import TestClient
 
 from app.api.routes.v1 import API_PREFIX
 
+from requests.auth import HTTPBasicAuth
+
+basic_auth = HTTPBasicAuth(
+    os.getenv("BASIC_AUTH_USERNAME"), os.getenv("BASIC_AUTH_PASSWORD")
+)
+
 
 # TODO: split out subtests into @pytest.mark.parametrize tests
 @pytest.mark.analyst
 def test_create_analyst(test_client: TestClient) -> None:
-    response = test_client.post(f"{API_PREFIX}/analysts")
+    payload = {"name": "TestAnalyst", "company": "TestCorp"}
+
+    response = test_client.post(f"{API_PREFIX}/analysts", auth=None, json=payload)
+    assert response.status_code == 401
+
+    response = test_client.post(f"{API_PREFIX}/analysts", auth=basic_auth)
     assert response.status_code != 200
     assert "field required" in str(response.json().get("detail"))
 
     response = test_client.post(
-        f"{API_PREFIX}/analysts", json={"name": "TestAnalyst", "company": "TestCorp"}
+        f"{API_PREFIX}/analysts",
+        json=payload,
+        auth=basic_auth,
     )
     assert response.status_code == 201
     assert response.json()["name"] == "TestAnalyst"
@@ -33,32 +47,38 @@ def test_get_analysts(test_client: TestClient) -> None:
 
 @pytest.mark.analyst
 def test_read_analyst(test_client: TestClient):
-    response = test_client.get(f"{API_PREFIX}/analysts/1")
+    response = test_client.get(f"{API_PREFIX}/analysts/1", auth=basic_auth)
     assert response.status_code == 200
     assert response.json() == {"id": 1, "name": "TestAnalyst", "company": "TestCorp"}
 
 
 @pytest.mark.analyst
 def test_update_analyst(test_client: TestClient):
-    response = test_client.get(f"{API_PREFIX}/analysts/1")
+    response = test_client.get(f"{API_PREFIX}/analysts/1", auth=basic_auth)
     assert response.status_code == 200
     assert response.json() == {"id": 1, "name": "TestAnalyst", "company": "TestCorp"}
 
+    payload = {"id": 1, "name": "TestAnalyst", "company": "Test Corp"}
+    response = test_client.put(f"{API_PREFIX}/analysts/1", json=payload, auth=None)
+    assert response.status_code == 401
+
     response = test_client.put(
-        f"{API_PREFIX}/analysts/1",
-        json={"id": 1, "name": "TestAnalyst", "company": "Test Corp"},
+        f"{API_PREFIX}/analysts/1", json=payload, auth=basic_auth
     )
-    # assert response.status_code == 200
+    assert response.status_code == 200
     assert response.json() == {"id": 1, "name": "TestAnalyst", "company": "Test Corp"}
 
 
 @pytest.mark.analyst
 def test_delete_analyst(test_client: TestClient):
-    response = test_client.delete(f"{API_PREFIX}/analysts/1")
+    response = test_client.delete(f"{API_PREFIX}/analysts/1", auth=None)
+    assert response.status_code == 401
+
+    response = test_client.delete(f"{API_PREFIX}/analysts/1", auth=basic_auth)
     assert response.status_code == 200
     assert response.json() == {"id": 1, "name": "TestAnalyst", "company": "Test Corp"}
 
-    response = test_client.delete(f"{API_PREFIX}/analysts/1")
+    response = test_client.delete(f"{API_PREFIX}/analysts/1", auth=basic_auth)
     assert response.status_code == 404
 
 
@@ -73,13 +93,16 @@ MOCK_ASSET = {
 # TODO: split out subtests into @pytest.mark.parametrize tests
 @pytest.mark.asset
 def test_create_asset(test_client: TestClient) -> None:
-    response = test_client.post(f"{API_PREFIX}/assets")
+    payload = MOCK_ASSET
+
+    response = test_client.post(f"{API_PREFIX}/assets", auth=None, json=payload)
+    assert response.status_code == 401
+
+    response = test_client.post(f"{API_PREFIX}/assets", auth=basic_auth)
     assert response.status_code != 200
     assert "field required" in str(response.json().get("detail"))
 
-    payload = MOCK_ASSET
-
-    response = test_client.post(f"{API_PREFIX}/assets", json=payload)
+    response = test_client.post(f"{API_PREFIX}/assets", json=payload, auth=basic_auth)
     assert response.status_code == 201
     assert response.json() == {**payload, **{"id": 1}}
 
@@ -101,21 +124,27 @@ def test_read_asset(test_client: TestClient):
 
 @pytest.mark.asset
 def test_update_asset(test_client: TestClient):
-    response = test_client.get(f"{API_PREFIX}/assets/1")
+    response = test_client.get(f"{API_PREFIX}/assets/1", auth=basic_auth)
     assert response.status_code == 200
     assert response.json() == {"id": 1, **MOCK_ASSET}
 
     payload = {"id": 1, **MOCK_ASSET, **{"description": "TBD"}}
 
-    response = test_client.put(f"{API_PREFIX}/assets/1", json=payload)
+    response = test_client.put(f"{API_PREFIX}/assets/1", json=payload, auth=None)
+    assert response.status_code == 401
+
+    response = test_client.put(f"{API_PREFIX}/assets/1", json=payload, auth=basic_auth)
     assert response.status_code == 200
     assert response.json() == payload
 
 
 @pytest.mark.asset
 def test_delete_asset(test_client: TestClient):
-    response = test_client.delete(f"{API_PREFIX}/assets/1")
+    response = test_client.delete(f"{API_PREFIX}/assets/1", auth=None)
+    assert response.status_code == 401
+
+    response = test_client.delete(f"{API_PREFIX}/assets/1", auth=basic_auth)
     assert response.status_code == 200
 
-    response = test_client.delete(f"{API_PREFIX}/assets/1")
+    response = test_client.delete(f"{API_PREFIX}/assets/1", auth=basic_auth)
     assert response.status_code == 404

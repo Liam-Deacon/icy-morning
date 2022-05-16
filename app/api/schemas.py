@@ -1,7 +1,7 @@
 """Module for defining key schemas used within the REST API."""
 import datetime
 
-from typing import Optional, Union
+from typing import Literal, Optional, Union
 
 import pydantic
 import pydantic.main
@@ -70,3 +70,24 @@ class AssetSchema(_AssetBaseSchema, _AssetPrimaryKeySchema):
 
     # FIXME: bug with pydantic.BaseModel.from_orm() method in async SQLAlchemy mode
     # analyst: AnalystSchema
+
+
+class _SubscriptionBaseSchema(BaseSchema):
+    """Common subscription fields for the data model."""
+
+    email: pydantic.EmailStr
+    topic: Literal["asset::creation"] = "asset::creation"
+
+
+class SubscriptionInputSchema(_SubscriptionBaseSchema):
+    """Schema for representing user email subscription input data model."""
+
+
+class _SubscriptionPrimaryKeySchema(BaseSchema):
+    """Subscription primary key mixin."""
+
+    subscription_id: int = pydantic.Field(alias="id")
+
+
+class SubscriptionSchema(_SubscriptionBaseSchema, _SubscriptionPrimaryKeySchema):
+    """Full subscription model."""
