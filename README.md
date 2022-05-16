@@ -50,6 +50,12 @@ cd infrastructure/
 make destroy-deployment
 ```
 
+### Pre-requisites
+
+#### Terraform
+
+If you wish to create a terraform state that is shared between users/machines (e.g. in DevOps scenarios) then first create an s3 bucket [using this guide](https://www.golinuxcloud.com/configure-s3-bucket-as-terraform-backend/). Once done `make main.tf` can be used to guide the user into configuring the TF backend to use S3.
+
 ## Development
 
 Development is assumed to be in a Linux environment with the following tools available:
