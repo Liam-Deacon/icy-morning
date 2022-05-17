@@ -29,8 +29,11 @@ icy-morning-fast-api.zip:
 	cd ../tmp && zip -r ../dist/$(APP)-fast-api.zip .
 	rm -rf ../tmp
 
-lint:
+fmt:
 	$(TF_EXEC) fmt
+
+lint:
+	$(TF_EXEC) fmt -check -recursive -diff
 
 test:
 	$(SERVERLESS_EXEC) invoke -f $(APP)
