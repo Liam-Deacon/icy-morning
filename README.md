@@ -1,6 +1,6 @@
 # Icy Morning Project
 
-![python](https://img.shields.io/static/v1?label=python&message=3.10&color=blue&logo=python) ![terraform](https://img.shields.io/static/v1?label=IaC&message=Terraform&color=purple&logo=terraform) ![aws](https://img.shields.io/static/v1?label=Cloud&message=AWS&color=orange&logo=amazon-aws) ![lambda](https://img.shields.io/static/v1?label=Serverless&message=Lambda&color=orange&logo=aws-lambda)
+![python](https://img.shields.io/static/v1?label=python&message=FastAPI&color=blue&logo=python) ![terraform](https://img.shields.io/static/v1?label=IaC&message=Terraform&color=purple&logo=terraform) ![aws](https://img.shields.io/static/v1?label=Cloud&message=AWS&color=orange&logo=amazon-aws) ![lambda](https://img.shields.io/static/v1?label=Serverless&message=Lambda&color=orange&logo=aws-lambda)
 
 ## Overview
 
