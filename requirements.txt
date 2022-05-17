@@ -6,3 +6,4 @@ uvicorn==0.17.6
 aiosqlite==0.17.0
 sqlalchemy-utils==0.38.2
 loguru==0.6.0
+asyncpg==0.25.0
