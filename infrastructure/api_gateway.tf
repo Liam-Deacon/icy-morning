@@ -55,16 +55,3 @@ resource "aws_lambda_permission" "apigw" {
 
 	source_arn = "${aws_apigatewayv2_api.api.execution_arn}/*/*"
 }
-
-
-# resource "aws_apigatewayv2_integration" "icy_morning" {
-#   api_id           = aws_apigatewayv2_api.icy_morning.id
-#   integration_type = "AWS"
-
-#   connection_type           = "INTERNET"
-#   content_handling_strategy = "CONVERT_TO_TEXT"
-#   description               = "Lambda example"
-#   integration_method        = "POST"
-#   integration_uri           = aws_lambda_function.icy_morning.invoke_arn
-#   passthrough_behavior      = "WHEN_NO_MATCH"
-# }
