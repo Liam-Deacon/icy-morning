@@ -25,7 +25,7 @@ resource "aws_iam_role" "test_role" {
 
 resource "aws_lambda_function" "icy_morning_lambda" {
   # NOTE: build filename with `make icy-morning-fast-api.zip` under infrastucture/ directory
-  filename      = "../dist/icy-morning-fast-api.zip"  
+  filename      = "../dist/icy-morning-fast-api.zip"  # TODO: consider using s3 archive instead
   function_name = "icy-morning"
   role          = aws_iam_role.test_role.arn
   handler       = "app.api.main_app.handler"
