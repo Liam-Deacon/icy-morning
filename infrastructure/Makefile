@@ -2,6 +2,10 @@ TF_EXEC ?= terraform
 SERVERLESS_EXEC ?= serverless
 APP ?= icy-morning
 
+PYTHON_VERSION ?= $(shell cat ../.python-version | echo 3.9.9)
+PYTHON_MAJOR_MIN = $(shell echo $(PYTHON_VERSION) | sed 's/-dev//' | cut -d '.' -f1,2)
+PIP_COMMAND ?= eval "$$(pyenv init -)" && pyenv shell $(PYTHON_VERSION) && python3 -m pip
+
 .PHONY: \
 	create-infrastructure \
 	destroy-infrastructure \
@@ -21,13 +25,14 @@ clean:
 
 create-archive: icy-morning-fast-api.zip
 
-icy-morning-fast-api.zip:
-	rm -rf ../tmp ../dist
-	mkdir -p ../tmp ../dist
-	cp -rf ../app/*  ./tmp/
-	pip3 install -r ./requirements.txt --target ../tmp
-	cd ../tmp && zip -r ../dist/$(APP)-fast-api.zip .
-	rm -rf ../tmp
+$(APP)-fast-api.zip:
+	rm -rf ../build/tmp ../dist && \
+	mkdir -p ../build/tmp ../dist && \
+	find ../app | grep -E "__pycache__$$" | xargs rm -rf && \
+	cp -rf ../app ../build/tmp/ && \
+	$(PIP_COMMAND) install -r ../requirements.txt --target ../build/tmp && \
+	cd ../build/tmp && zip -r ../dist/$(APP)-fast-api.zip . && \
+	rm -rf ../build/tmp
 
 fmt:
 	$(TF_EXEC) fmt

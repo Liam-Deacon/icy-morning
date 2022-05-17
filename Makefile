@@ -1,6 +1,6 @@
 
-PYTHON_VERSION ?= 3.10.4
-PYTHON_MAJOR_MIN = $(shell echo $(PYTHON_VERSION) | cut -d '.' -f1,2)
+PYTHON_VERSION ?= $(shell cat .python-version | echo 3.9.9)
+PYTHON_MAJOR_MIN = $(shell echo $(PYTHON_VERSION) | sed 's/-dev//' | cut -d '.' -f1,2)
 AWS_ACCOUNT_ID ?= account_id
 AWS_REGION ?= eu-west-2
 AWS_ECR ?= $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com

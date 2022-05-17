@@ -24,13 +24,18 @@ resource "aws_iam_role" "test_role" {
 }
 
 resource "aws_lambda_function" "icy_morning_lambda" {
-  filename      = "icy-morning.zip"
+  # NOTE: build filename with `make icy-morning-fast-api.zip` under infrastucture/ directory
+  filename      = "../dist/icy-morning-fast-api.zip"  
   function_name = "icy-morning"
   role          = aws_iam_role.test_role.arn
   handler       = "app.api.main_app.handler"
-  runtime       = "python3.8"
+  runtime       = "python3.9"
   environment {
-    
+    variables = {
+      AUTH_TYPE           = var.api_auth_type
+      BASIC_AUTH_USERNAME = var.basic_auth_username
+      BASIC_AUTH_PASSWORD = var.basic_auth_password
+    }
   }
 }
 
