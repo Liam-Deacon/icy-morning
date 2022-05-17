@@ -44,3 +44,4 @@ jobs:
         env:
           BASIC_AUTH_USERNAME: sonic
           BASIC_AUTH_PASSWORD: tails
+          VENV_COMMAND: ""
