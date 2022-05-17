@@ -1,30 +1,37 @@
+"""Subpackage for security backends."""
 import os
 
 from collections import defaultdict
-from typing import Any, Type
+from typing import Any, Dict, Type
 
 from fastapi.security import HTTPBasic, HTTPBearer  # noqa: F401
 
-from .base_auth import BaseSecurityService
-from .basic_auth import BasicAuthSecurityService
+from app.api.security.base_auth import BaseSecurityService
+from app.api.security.basic_auth import BasicAuthSecurityService
 
-AUTH_TYPE_LOOKUP: dict[str, Type[BaseSecurityService]] = defaultdict(
+#: Hashmap lookup for authentication types
+AUTH_TYPE_LOOKUP: Dict[str, Type[BaseSecurityService]] = defaultdict(
     lambda: BasicAuthSecurityService,
     {
         "basic": BasicAuthSecurityService,
     },
 )
 
+#: The authentication type to use for the current environment
 AUTH_TYPE = AUTH_TYPE_LOOKUP[os.getenv("AUTH_TYPE")]
 
-
-SECURITY_TYPE_LOOKUP: dict[str, Any] = defaultdict(
+#: Hashmap lookup for different security types
+SECURITY_TYPE_LOOKUP: Dict[str, Any] = defaultdict(
     lambda: HTTPBasic,
     {
         "basic": HTTPBasic,
     },
 )
 
+#: The security type to use for the current environment
 SECURITY = SECURITY_TYPE_LOOKUP[AUTH_TYPE]()
 
+#: The security service to use for the current environment
 SECURITY_SERVICE: BaseSecurityService = AUTH_TYPE()
+
+# TODO: Provide facades to allow routers to use BasicAuth, BearerAuth etc. in same way.
