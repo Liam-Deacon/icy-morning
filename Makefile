@@ -1,5 +1,5 @@
 
-PYTHON_VERSION ?= $(shell cat .python-version | echo 3.9.9)
+PYTHON_VERSION ?= $(shell cat .python-version | echo 3.8.13)
 PYTHON_MAJOR_MIN = $(shell echo $(PYTHON_VERSION) | sed 's/-dev//' | cut -d '.' -f1,2)
 AWS_ACCOUNT_ID ?= account_id
 AWS_REGION ?= eu-west-2

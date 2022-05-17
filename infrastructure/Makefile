@@ -2,7 +2,7 @@ TF_EXEC ?= terraform
 SERVERLESS_EXEC ?= serverless
 APP ?= icy-morning
 
-PYTHON_VERSION ?= $(shell cat ../.python-version | echo 3.9.9)
+PYTHON_VERSION ?= $(shell cat ../.python-version | echo 3.8.13)
 PYTHON_MAJOR_MIN = $(shell echo $(PYTHON_VERSION) | sed 's/-dev//' | cut -d '.' -f1,2)
 PIP_COMMAND ?= eval "$$(pyenv init -)" && pyenv shell $(PYTHON_VERSION) && python3 -m pip
 
