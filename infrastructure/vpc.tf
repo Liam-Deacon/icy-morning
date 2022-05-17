@@ -8,7 +8,7 @@ resource "aws_vpc" "main" {
   enable_dns_support   = true
   enable_dns_hostnames = true
   tags = {
-    Name = local.tag_name
+    name = local.tag_name
   }
 }
 
@@ -18,7 +18,7 @@ resource "aws_subnet" "public" {
   availability_zone       = data.aws_availability_zones.available.names[0]
   map_public_ip_on_launch = true
   tags = {
-    Name = "${local.tag_name}-public"
+    name = "${local.tag_name}-public"
   }
 }
 
@@ -32,21 +32,21 @@ resource "aws_subnet" "private" {
   vpc_id            = aws_vpc.main.id
   availability_zone = data.aws_availability_zones.available.names[count.index]
   tags = {
-    Name = "${local.tag_name}-private-${count.index}"
+    name = "${local.tag_name}-private-${count.index}"
   }
 }
 
 resource "aws_internet_gateway" "main" {
   vpc_id = aws_vpc.main.id
   tags = {
-    Name = local.tag_name
+    name = local.tag_name
   }
 }
 
 // NAT gateway requires an elastic ip
 resource "aws_eip" "public" {
   tags = {
-    Name = local.tag_name
+    name = local.tag_name
   }
 }
 
@@ -55,7 +55,7 @@ resource "aws_nat_gateway" "main" {
   // connect to public subnet
   subnet_id = aws_subnet.public.id
   tags = {
-    Name = local.tag_name
+    name = local.tag_name
   }
 }
 

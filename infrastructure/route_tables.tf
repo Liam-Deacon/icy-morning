@@ -1,7 +1,7 @@
 resource "aws_route_table" "public_subnet" {
   vpc_id = aws_vpc.main.id
   tags = {
-    Name = "${local.tag_name}-public"
+    name = "${local.tag_name}-public"
   }
 }
 
@@ -20,7 +20,7 @@ resource "aws_route" "public" {
 resource "aws_route_table" "private_lambda" {
   vpc_id = aws_vpc.main.id
   tags = {
-    Name = "${local.tag_name}-private-lambda"
+    name = "${local.tag_name}-private-lambda"
   }
 }
 

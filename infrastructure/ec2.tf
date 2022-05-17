@@ -45,7 +45,7 @@ resource "aws_instance" "bastion_host" {
   }
 
   tags = {
-    Name = "${local.tag_name}-bastion-host"
+    name = "${local.tag_name}-bastion-host"
   }
 
   depends_on = [
