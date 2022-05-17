@@ -51,6 +51,8 @@ cd infrastructure/
 make destroy-deployment
 ```
 
+> NOTE: The environment variables `$AWS_SECRET_ACCESS_KEY` and `$AWS_ACCESS_KEY_ID` must be set in the user environment in order to make changes to AWS infrstructure.
+
 ### Pre-requisites
 
 #### Terraform
