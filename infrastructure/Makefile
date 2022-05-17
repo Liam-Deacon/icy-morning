@@ -21,7 +21,7 @@ init:
 	$(TF_EXEC) init
 
 clean:
-	rm -rf ../dist ../tmp
+	rm -rf ../dist ../build/tmp/
 
 create-archive: icy-morning-fast-api.zip
 
@@ -31,7 +31,7 @@ $(APP)-fast-api.zip:
 	find ../app | grep -E "__pycache__$$" | xargs rm -rf && \
 	cp -rf ../app ../build/tmp/ && \
 	$(PIP_COMMAND) install -r ../requirements.txt --target ../build/tmp && \
-	cd ../build/tmp && zip -r ../dist/$(APP)-fast-api.zip . && \
+	cd ../build/tmp && zip -r ../../dist/$(APP)-fast-api.zip . && \
 	rm -rf ../build/tmp
 
 fmt:
