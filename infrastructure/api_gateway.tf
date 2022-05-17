@@ -10,7 +10,7 @@ resource "aws_lambda_function" "icy_morning_lambda" {
 
   environment {
     variables = {
-      AUTH_TYPE           = var.api_auth_type
+      AUTH_TYPE           = local.api_auth_type
       BASIC_AUTH_USERNAME = var.basic_auth_username
       BASIC_AUTH_PASSWORD = var.basic_auth_password
 

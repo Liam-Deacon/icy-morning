@@ -285,6 +285,7 @@ variable "route53_sub_domain_name" {
 
 variable "api_auth_type" {
   description = "The type of authentication to use for REST API, e.g. basic, jwt. NOTE: only 'basic' authentication is currently supported."
+  default     = ""
 }
 
 variable "basic_auth_username" {

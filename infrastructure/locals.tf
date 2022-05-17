@@ -16,4 +16,6 @@ locals {
   rds_admin_username = local.rds_secrets["username"]
 
   rds_admin_password = local.rds_secrets["password"]
+
+  api_auth_type = var.api_auth_type == "" ? "basic" : var.api_auth_type
 }
