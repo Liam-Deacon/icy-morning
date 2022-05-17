@@ -1,28 +1,3 @@
-resource "aws_iam_role" "test_role" {
-  name = "test_role"
-
-  # Terraform's "jsonencode" function converts a
-  # Terraform expression result to valid JSON syntax.
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = "sts:AssumeRole"
-        Effect = "Allow"
-        Sid    = ""
-        Principal = {
-          Service = "ec2.amazonaws.com"
-        }
-      },
-    ]
-  })
-
-  tags = {
-    tag-key = "tag-value"
-  }
-
-}
-
 resource "aws_lambda_function" "icy_morning_lambda" {
   # NOTE: build filename with `make icy-morning-fast-api.zip` under infrastucture/ directory
   filename      = "../dist/icy-morning-fast-api.zip"  # TODO: consider using s3 archive instead
