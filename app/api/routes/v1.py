@@ -1,5 +1,5 @@
 """Defines routes for v1 API."""
-from typing import Any, List
+from typing import List
 
 from fastapi import APIRouter, Depends
 from fastapi.security import HTTPBasicCredentials
@@ -141,6 +141,7 @@ async def subscribe_user_to_asset_events(
     payload: SubscriptionInputSchema,
     credentials: HTTPBasicCredentials = Depends(SECURITY),
 ):
+    """Subscribe user to asset events."""
     SECURITY_SERVICE.verify(credentials)
     subscription = await subscription_repo.create(payload)
     return subscription
@@ -152,6 +153,7 @@ async def subscribe_user_to_asset_events(
 async def unsubscribe_user_from_asset_events(
     subscription_id: int, credentials: HTTPBasicCredentials = Depends(SECURITY)
 ):
+    """Remove user subscription from asset events."""
     SECURITY_SERVICE.verify(credentials)
     subscription = await subscription_repo.delete(subscription_id)
     return subscription

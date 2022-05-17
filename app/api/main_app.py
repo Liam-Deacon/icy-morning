@@ -32,4 +32,4 @@ app.add_middleware(SQLAlchemyMiddleware, db_url=sqlalchemy_connection_string)
 app.include_router(api_v1_router)
 
 #: Wrapper for AWS API Gateway
-handler: Mangum = Mangum(app)
+handler: Mangum = Mangum(app)  # NOTE: use this in serverless.yml handler

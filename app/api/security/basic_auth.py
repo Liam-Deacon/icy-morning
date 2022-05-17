@@ -2,8 +2,8 @@
 import os
 import secrets
 
-from fastapi import Depends
-from fastapi.security import HTTPBasicCredentials
+from fastapi import Depends  # noqa: W0611
+from fastapi.security import HTTPBasicCredentials  # noqa: W0611
 
 from .base_auth import BaseSecurityService
 

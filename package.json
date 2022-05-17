@@ -1,0 +1,8 @@
+{
+    "name": "icy-morning-app",
+    "version": "1.0.0",
+    "author": "Liam Deacon",
+    "dependencies": {
+        "serverless-python-requirements": "^5.0.1"
+    }
+}
