@@ -69,7 +69,7 @@ Place your `ca.crt`, `certificate.crt` and `certificate.key` files for your cust
 Development is assumed to be in a Linux environment with the following tools available:
 
 - bash
-- pyenv (or python3.10)
+- pyenv (or python3.8)
 - make
 - terraform
 
