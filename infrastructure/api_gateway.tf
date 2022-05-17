@@ -27,7 +27,7 @@ resource "aws_lambda_function" "icy_morning_lambda" {
   filename      = "icy-morning.zip"
   function_name = "icy-morning"
   role          = aws_iam_role.test_role.arn
-  handler       = "index.handler"
+  handler       = "app.api.main_app.handler"
   runtime       = "python3.8"
   environment {
     
