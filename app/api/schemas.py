@@ -4,6 +4,7 @@ import datetime
 from typing import Literal, Optional, Union
 
 import pydantic
+import pydantic.networks
 import pydantic.main
 
 
@@ -75,7 +76,7 @@ class AssetSchema(_AssetBaseSchema, _AssetPrimaryKeySchema):
 class _SubscriptionBaseSchema(BaseSchema):
     """Common subscription fields for the data model."""
 
-    email: pydantic.EmailStr
+    email: pydantic.networks.EmailStr
     topic: Literal["asset::creation"] = "asset::creation"
 
 
