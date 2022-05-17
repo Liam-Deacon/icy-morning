@@ -56,6 +56,13 @@ make destroy-deployment
 
 If you wish to create a terraform state that is shared between users/machines (e.g. in DevOps scenarios) then first create an s3 bucket [using this guide](https://www.golinuxcloud.com/configure-s3-bucket-as-terraform-backend/). Once done `make main.tf` can be used to guide the user into configuring the TF backend to use S3.
 
+##### API Gateway Custom Domain
+
+Place your `ca.crt`, `certificate.crt` and `certificate.key` files for your custom domain under `infrastructure/certs` and add an `infrastructure/overrides.tf` file containing values for the following variables:
+
+- `api_gateway_domain`
+- `api_gateway_certificate_name`
+
 ## Development
 
 Development is assumed to be in a Linux environment with the following tools available:

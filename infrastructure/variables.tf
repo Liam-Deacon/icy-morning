@@ -293,3 +293,34 @@ variable "basic_auth_username" {
 variable "basic_auth_password" {
   description = "Password for REST API when using basic auth"
 }
+
+variable "use_cloudwatch" {
+  description = "Whether to use Amazon CloudWatch to monitor resources and applications in AWS"
+  type        = bool
+  default     = false 
+}
+
+variable "api_gateway_domain" {
+  description = "Use a custom domain for API Gateway when populated"
+  default = ""
+}
+
+variable "api_gateway_certificate_ca_filename" {
+  description = "CA certificate filename for API gateway custom domain"
+  default = ""
+}
+
+variable "api_gateway_certificate_filename" {
+  description = "CRT certificate filename for API gateway custom domain"
+  default = "" 
+}
+
+variable "api_gateway_certificate_key_filename" {
+  description = "KEY certificate filename for API gateway custom domain"
+  default = ""
+}
+
+variable "api_gateway_certificate_name" {
+  description = "Certificate name for API gateway custom domain"
+  default = ""
+}

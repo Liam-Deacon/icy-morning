@@ -18,7 +18,7 @@ resource "aws_iam_role" "test_role" {
   })
 
   tags = {
-    name = var.tag_name
+    name = local.tag_name
   }
 
 }
