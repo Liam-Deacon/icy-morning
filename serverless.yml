@@ -1,0 +1,49 @@
+service: icy-morning
+
+package:
+  individually: true
+
+provider:
+  name: aws
+  runtime: python3.8
+  region: ${opt:region, "eu-west-2"}
+  stage: ${opt:stage, "dev"}
+
+plugins:
+  - serverless-python-requirements
+
+custom:
+  pythonRequirements:
+    dockerizePip: true
+    layer:
+      name: icy-morning-app-layer
+      description: Icy Morning app layer
+      compatibleRuntimes:
+        - python3.8
+        - python3.9
+        # - python3.10
+
+functions:
+  app:
+    package:
+      include:
+        - "app/**.py"
+      exclude:
+        - "requirements.txt"
+        - "requirements-dev.txt"
+        - "package.json"
+        - "package-lock.json"
+        - ".serverless/**"
+        - ".venv/**"
+        - "node_modules/**"
+
+    handler: app.api.main_app.handler
+    environment:
+      STAGE: ${self:provider.stage}
+      SQLALCHEMY_DATABASE_CONNECTION_URI: ${opt:database_connection_uri}
+    layers:
+      - { Ref: PythonRequirementsLambdaLayer }
+    events:
+      - http:
+          method: any
+          path: /{proxy+}

@@ -37,5 +37,8 @@ __pycache__/*
 
 db.sqlite
 
+# Node
+node_modules/*
+
 # VS Code
 .vscode
