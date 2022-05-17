@@ -13,6 +13,8 @@ resource "aws_lambda_function" "icy_morning_lambda" {
       AUTH_TYPE           = var.api_auth_type
       BASIC_AUTH_USERNAME = var.basic_auth_username
       BASIC_AUTH_PASSWORD = var.basic_auth_password
+
+      SQLALCHEMY_DATABASE_CONNECTION_URI = "postgresql://${local.rds_admin_username}:${local.rds_admin_password}@${aws_db_instance.rds.address}:${aws_db_instance.rds.port}/${aws_db_instance.rds.name}"
     }
   }
 }
@@ -60,4 +62,9 @@ resource "aws_api_gateway_base_path_mapping" "base_path_mapping" {
   depends_on = [
     aws_api_gateway_domain_name.domain 
   ]
+}
+
+data "aws_secretsmanager_secret_version" "rds_creds" {
+  # write your secret name here
+  secret_id = aws_secretsmanager_secret.this.id
 }

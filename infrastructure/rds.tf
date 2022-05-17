@@ -1,6 +1,9 @@
+resource "null_resource" "enable_rds_instance" {
+    count = var.db_enabled ? 1 : 0
+}
+
 # create RDS SQL SERVER db instance
 resource "aws_db_instance" "rds" {
-  count                         = var.db_enabled ? 1 : 0
   allocated_storage             = var.db_allocated_storage
   allow_major_version_upgrade   = var.db_allow_major_version_upgrade
   auto_minor_version_upgrade    = var.db_auto_minor_version_upgrade
@@ -34,6 +37,7 @@ resource "aws_db_instance" "rds" {
   final_snapshot_identifier     = var.db_final_snapshot_identifier_prefix
 
   depends_on = [
+    null_resource.enable_rds_instance,
     aws_db_subnet_group.rds,
     aws_secretsmanager_secret.this,
     aws_secretsmanager_secret_version.this
@@ -43,11 +47,14 @@ resource "aws_db_instance" "rds" {
 
 # create db subnet group
 resource "aws_db_subnet_group" "rds" {
-  count                         = var.db_enabled ? 1 : 0
   name                          = "${var.db_identifier}-subnet-group"
   description                   = "Created by terraform"
   subnet_ids                    = var.subnet_ids
   tags                          = var.tags
+
+  depends_on = [
+    null_resource.enable_rds_instance
+  ]
 }
 
 
@@ -62,13 +69,13 @@ resource "random_password" "password" {
 
 # create secret and secret versions for database master account 
 resource "aws_secretsmanager_secret" "this" {
-  name                          = var.secret_manager_name
-  recovery_window_in_days       = 7
-  tags                          = var.tags
+  name                    = var.secret_manager_name
+  recovery_window_in_days = 7
+  tags                    = var.tags
 }
 
 resource "aws_secretsmanager_secret_version" "this" {
-  secret_id                     = aws_secretsmanager_secret.this.id
+  secret_id     = aws_secretsmanager_secret.this.id
   secret_string = <<EOF
    {
     "username": "admin",
