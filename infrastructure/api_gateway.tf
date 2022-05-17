@@ -14,7 +14,7 @@ resource "aws_lambda_function" "icy_morning_lambda" {
       BASIC_AUTH_USERNAME = var.basic_auth_username
       BASIC_AUTH_PASSWORD = var.basic_auth_password
 
-      SQLALCHEMY_DATABASE_CONNECTION_URI = "postgresql://${local.rds_admin_username}:${local.rds_admin_password}@${aws_db_instance.rds.address}:${aws_db_instance.rds.port}/${aws_db_instance.rds.name}"
+      SQLALCHEMY_DATABASE_CONNECTION_URI = "postgresql+asyncpg://${local.rds_admin_username}:${local.rds_admin_password}@${aws_db_instance.rds.address}:${aws_db_instance.rds.port}/${aws_db_instance.rds.name}"
     }
   }
 }
