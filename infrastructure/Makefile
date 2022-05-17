@@ -43,6 +43,9 @@ lint:
 test:
 	$(SERVERLESS_EXEC) invoke -f $(APP)
 
+terraform_init:
+	$(TF_EXEC) init
+
 terraform_deploy: create-archive
 	$(TF_EXEC) apply
 
@@ -55,9 +58,11 @@ serverless_deploy:
 serverless_destroy:
 	$(SERVERLESS_EXEC) remove --stage dev
 
-deploy: terraform_deploy serverless_deploy
+deploy: terraform_init terraform_deploy #serverless_deploy
 
-destroy: serverless_destroy terraform_destroy
+destroy:
+	@true || $(MAKE) serverless_destroy
+	$(MAKE) terraform_destroy
 
 create-infrastructure: deploy
 

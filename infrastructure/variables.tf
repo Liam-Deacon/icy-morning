@@ -239,6 +239,7 @@ variable project_name {
 
 variable stage {
   description = "The development stage, like 'dev' or 'production'"
+  default     = "dev"
 }
 
 variable db_name {
@@ -284,6 +285,7 @@ variable "route53_sub_domain_name" {
 
 variable "api_auth_type" {
   description = "The type of authentication to use for REST API, e.g. basic, jwt. NOTE: only 'basic' authentication is currently supported."
+  default     = ""
 }
 
 variable "basic_auth_username" {
@@ -307,17 +309,17 @@ variable "api_gateway_domain" {
 
 variable "api_gateway_certificate_ca_filename" {
   description = "CA certificate filename for API gateway custom domain"
-  default = ""
+  default = "ca.crt"
 }
 
 variable "api_gateway_certificate_filename" {
   description = "CRT certificate filename for API gateway custom domain"
-  default = "" 
+  default = "certificate.crt" 
 }
 
 variable "api_gateway_certificate_key_filename" {
   description = "KEY certificate filename for API gateway custom domain"
-  default = ""
+  default = "certificate.key"
 }
 
 variable "api_gateway_certificate_name" {
