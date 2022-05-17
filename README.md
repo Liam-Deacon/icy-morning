@@ -9,7 +9,7 @@ Repository to showcase a cloud engineering project bringing together a simple Fa
 The AWS infrastraucture is provisioned with Terraform for deploying the FastAPI Lambda function. It creates an API using an AWS API Gateway and Lambda function, based on [this walkthrough](https://towardsdatascience.com/fastapi-aws-robust-api-part-1-f67ae47390f9).  The setup uses:
 
 - _REST API_: [FastAPI](https://fastapi.tiangolo.com/) and [Mangum](https://mangum.io/)
-- _Infrastructure_: [Terraform](https://www.terraform.io/) and [Serverless](https://www.serverless.com/)
+- _Infrastructure_: [Terraform](https://www.terraform.io/)
 
 Requests are sent to the API Gateway, which handles all requests using a [proxy integration with the Lambda function](https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html). Mangum acts as a wrapper, which allows FastAPI to handle the requests and create responses the API gateway can serve. All logs are sent to CloudWatch log groups.
 
@@ -69,9 +69,9 @@ Place your `ca.crt`, `certificate.crt` and `certificate.key` files for your cust
 Development is assumed to be in a Linux environment with the following tools available:
 
 - bash
-- pyenv (or python3.8)
+- pyenv (or python3.8, `.python-version` contains the exact version used locally)
 - make
-- terraform
+- terraform (use tfenv and version within `.terraform-version`)
 
 If you are using Linux then the toolchain can be installed using `make install-dev`.
 
