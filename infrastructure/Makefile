@@ -58,7 +58,7 @@ terraform_deploy: create-archive
 	$(TF_EXEC) apply
 
 terraform_destroy:
-	$(TF_EXEC) destroy -var=\"stage=dev\"
+	$(TF_EXEC) destroy -var basic_auth_username= -var basic_auth_password=
 
 serverless_deploy:
 	$(SERVERLESS_EXEC) deploy -f $(APP) --stage dev
