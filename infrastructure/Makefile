@@ -42,6 +42,7 @@ lint:
 	$(TF_EXEC) fmt -check -recursive -diff
 
 check:
+	$(TF_EXEC) init 1>/dev/null 2>/dev/null
 	$(TF_EXEC) plan -var basic_auth_password=changeme -var basic_auth_username=testuser
 
 test: init
