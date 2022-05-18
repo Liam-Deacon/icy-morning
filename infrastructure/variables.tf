@@ -59,7 +59,7 @@ variable "db_publicly_accessible" {
   type        = bool
 }
 variable "db_deletion_protection" {
-  default     = true
+  default     = false
   description = "Set to `false` to prevent database from deletation"
   type        = bool
 }
