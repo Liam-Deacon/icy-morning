@@ -31,6 +31,7 @@ output "database_name" {
 output "database_username" {
   description = "Database Username"
   value       = aws_db_instance.rds.username
+  sensitive   = true
 }
 
 output "database_password" {

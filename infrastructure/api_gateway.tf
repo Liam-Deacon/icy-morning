@@ -6,7 +6,8 @@ resource "aws_lambda_function" "icy_morning_lambda" {
   handler       = "app.api.main_app.handler"
   runtime       = "python3.8"  # NOTE: terraform validate fails with 3.9+
 
-  reserved_concurrent_executions = 2
+  # reserved_concurrent_executions = var.lambda_reserved_concurrent_operations  # set to minimum for aws account
+
 
   environment {
     variables = {
@@ -35,34 +36,6 @@ resource "aws_lambda_permission" "apigw" {
 	source_arn = "${aws_apigatewayv2_api.api.execution_arn}/*/*"
 }
 
-
-resource "null_resource" "custom_api_gateway_domain_enabled" {
-  count = (var.api_gateway_domain == "") ? 1 : 0
-}
-
-resource "aws_api_gateway_domain_name" "domain" {
-  domain_name = var.api_gateway_domain
-
-  certificate_name        = var.api_gateway_certificate_name
-  certificate_body        = "${file("${path.module}/certs/${var.api_gateway_certificate_filename}")}"
-  certificate_chain       = "${file("${path.module}/certs/${var.api_gateway_certificate_ca_filename}")}"
-  certificate_private_key = "${file("${path.module}/certs/${var.api_gateway_certificate_key_filename}")}"
-
-  depends_on = [
-    null_resource.custom_api_gateway_domain_enabled
-  ]
-}
-
-
-resource "aws_api_gateway_base_path_mapping" "base_path_mapping" {
-  api_id      = "${aws_apigatewayv2_api.api.id}"
-  
-  domain_name = "${aws_api_gateway_domain_name.domain.domain_name}"
-
-  depends_on = [
-    aws_api_gateway_domain_name.domain 
-  ]
-}
 
 data "aws_secretsmanager_secret_version" "rds_creds" {
   # write your secret name here

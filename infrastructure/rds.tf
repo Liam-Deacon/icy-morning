@@ -13,8 +13,8 @@ resource "aws_db_instance" "rds" {
   backup_retention_period       = var.db_backup_retention_period
   backup_window                 = var.db_backup_window
   deletion_protection           = var.db_deletion_protection
-  db_subnet_group_name          = aws_db_subnet_group.rds.*.id[0]
-  character_set_name            = var.db_character_set_name
+  db_subnet_group_name          = aws_db_subnet_group.rds_subnet.*.id[0]
+  # character_set_name            = var.db_character_set_name  # FIXME: cannot change character set with postgres database
   engine                        = var.db_engine 
   engine_version                = var.db_engine_version
   identifier                    = var.db_identifier
@@ -29,16 +29,16 @@ resource "aws_db_instance" "rds" {
   apply_immediately             = var.db_apply_immediately
   license_model                 = var.db_license_model
   port                          = var.db_port
-  parameter_group_name          = var.db_parameter_group_name
+  # parameter_group_name          = var.db_parameter_group_name
   performance_insights_enabled  = var.db_performance_insights_enabled
   tags                          = var.tags
   multi_az                      = var.db_multi_az
-  timezone                      = var.db_timezone
+  # timezone                      = var.db_timezone  # FIXME: cannot specify timezone with postgres databases in RDS
   final_snapshot_identifier     = var.db_final_snapshot_identifier_prefix
 
   depends_on = [
     null_resource.enable_rds_instance,
-    aws_db_subnet_group.rds,
+    aws_db_subnet_group.rds_subnet,
     aws_secretsmanager_secret.this,
     aws_secretsmanager_secret_version.this
 
@@ -46,10 +46,10 @@ resource "aws_db_instance" "rds" {
 }
 
 # create db subnet group
-resource "aws_db_subnet_group" "rds" {
+resource "aws_db_subnet_group" "rds_subnet" {
   name                          = "${var.db_identifier}-subnet-group"
   description                   = "Created by terraform"
-  subnet_ids                    = var.subnet_ids
+  subnet_ids                    = concat([aws_subnet.public.id], aws_subnet.private.*.id)
   tags                          = var.tags
 
   depends_on = [
@@ -78,7 +78,7 @@ resource "aws_secretsmanager_secret_version" "this" {
   secret_id     = aws_secretsmanager_secret.this.id
   secret_string = <<EOF
    {
-    "username": "admin",
+    "username": "pgadmin",
     "password": "${random_password.password.result}"
    }
 EOF

@@ -70,7 +70,7 @@ variable "db_apply_immediately" {
   type        = bool
 }
 variable "db_allocated_storage" {
-  default     = "1"
+  default     = "10"
   description = "Allocate storage size"
   type        = string
 }
@@ -97,7 +97,7 @@ variable "db_identifier" {
 }
 
 variable "db_engine_version" {
-  default     = "11.5"
+  default     = "14.1"
   description = "Specify DB version"
   type        = string
 }
@@ -138,14 +138,14 @@ variable "secret_manager_name" {
   
 # }
  variable "db_license_model" {
-  description = "One of license-included, bring-your-own-license, general-public-license"
-  default = "license-included"
+  description = "One of license-included, bring-your-own-license, general-public-license, postgresql-license"
+  default = "postgresql-license"
 }
 
 variable "db_port" {
   description = "The port on which to accept connections"
   type = string
-  default = "1433"
+  default = "5432"
 }
 
 variable "db_character_set_name" {
@@ -155,7 +155,7 @@ variable "db_character_set_name" {
 }
 
 variable "db_parameter_group_name" {
-  default = "default.postgres-11.5"
+  default = "default.postgres-14.1"
 }
 
 
@@ -325,4 +325,10 @@ variable "api_gateway_certificate_key_filename" {
 variable "api_gateway_certificate_name" {
   description = "Certificate name for API gateway custom domain"
   default = ""
+}
+
+variable "lambda_reserved_concurrent_operations" {
+  description = "The number of reserved concurrent operations for the Lambda. Cannot be less than that set on the AWS account."
+  type = number
+  default = 1
 }
