@@ -7,8 +7,7 @@ resource "aws_lambda_function" "icy_morning_lambda" {
   runtime       = "python3.8"  # NOTE: terraform validate fails with 3.9+
 
 
-  # reserved_concurrent_executions = var.lambda_reserved_concurrent_operations  # set to minimum for aws account
-  reserved_concurrent_executions = 0
+  reserved_concurrent_executions = var.lambda_reserved_concurrent_operations  # set to minimum for aws account
 
   # checkov:skip=CKV_AWS_173:This is okay for testing
   # kms_key_arn = "ckv_km"

@@ -330,5 +330,5 @@ variable "api_gateway_certificate_name" {
 variable "lambda_reserved_concurrent_operations" {
   description = "The number of reserved concurrent operations for the Lambda. Cannot be less than that set on the AWS account."
   type = number
-  default = 1
+  default = -1
 }

@@ -4,7 +4,7 @@ Notes
 Modified from https://rogulski.it/blog/sqlalchemy-14-async-orm-with-fastapi/
 """
 import abc
-from typing import Generic, List, TypeVar, Type
+from typing import Generic, List, TypeVar, Type, Union
 
 from fastapi_async_sqlalchemy import db
 
@@ -68,7 +68,7 @@ class BaseRepository(Generic[InSchema, Schema, Table], metaclass=abc.ABCMeta):
             entry = await self._get_by_id(entry_id)
             return self._schema.from_orm(entry)
 
-    async def update(self, entry_id: int, schema: Schema | dict) -> Schema:
+    async def update(self, entry_id: int, schema: Union[Schema, dict]) -> Schema:
         """Update entry in database from input schema."""
         schema_dict = schema if isinstance(schema, dict) else schema.dict(by_alias=True)
         async with db():
