@@ -44,8 +44,8 @@ resource "aws_db_instance" "rds" {
   depends_on = [
     null_resource.enable_rds_instance,
     aws_db_subnet_group.rds_subnet,
-    aws_secretsmanager_secret.this,
-    aws_secretsmanager_secret_version.this
+    aws_secretsmanager_secret.icy_morning_rds_secrets,
+    aws_secretsmanager_secret_version.icy_morning_rds_secrets_version
 
   ]
 }
@@ -89,15 +89,15 @@ resource "random_password" "password" {
 
 
 # create secret and secret versions for database master account 
-resource "aws_secretsmanager_secret" "this" {
+resource "aws_secretsmanager_secret" "icy_morning_rds_secrets" {
   name                    = var.secret_manager_name
   recovery_window_in_days = var.secret_manager_recovery_window_days
   tags                    = var.tags
   # checkov:skip=CKV_AWS_149: TODO: Ensure Secrets Manager secret is encrypted using KMS CMK
 }
 
-resource "aws_secretsmanager_secret_version" "this" {
-  secret_id     = aws_secretsmanager_secret.this.id
+resource "aws_secretsmanager_secret_version" "icy_morning_rds_secrets_version" {
+  secret_id     = aws_secretsmanager_secret.icy_morning_rds_secrets.id
   secret_string = <<EOF
    {
     "username": "pgadmin",

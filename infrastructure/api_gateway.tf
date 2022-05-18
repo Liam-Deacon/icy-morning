@@ -58,5 +58,5 @@ resource "aws_lambda_permission" "apigw" {
 
 data "aws_secretsmanager_secret_version" "rds_creds" {
   # write your secret name here
-  secret_id = aws_secretsmanager_secret.this.id
+  secret_id = aws_secretsmanager_secret.icy_morning_rds_secrets.id
 }
