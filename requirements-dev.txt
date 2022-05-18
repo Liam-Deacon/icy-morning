@@ -8,3 +8,4 @@ flake8==4.0.1
 pycodestyle==2.8.0
 black==22.3.0
 pylint==2.9.5
+checkov==2.0.1143

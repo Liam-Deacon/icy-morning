@@ -41,8 +41,11 @@ fmt:
 lint:
 	$(TF_EXEC) fmt -check -recursive -diff
 
-test:
-	$(SERVERLESS_EXEC) invoke -f $(APP)
+check:
+	$(TF_EXEC) plan -var basic_auth_password=changeme -var basic_auth_username=testuser
+
+test: init
+	checkov --framework terraform -d .
 
 api_gateway_custom_domain.tf:
 	cp ./templates/api_gateway_custom_domain.tf.tpl api_gateway_custom_domain.tf
