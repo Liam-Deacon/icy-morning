@@ -4,6 +4,8 @@ resource "null_resource" "enable_rds_instance" {
 
 # create RDS SQL SERVER db instance
 resource "aws_db_instance" "rds" {
+  # checkov:skip=CKV_AWS_118:Not needed for demoing
+  # checkov:skip=CKV2_AWS_30:Do not need query logging for testing
   allocated_storage             = var.db_allocated_storage
   allow_major_version_upgrade   = var.db_allow_major_version_upgrade
   auto_minor_version_upgrade    = var.db_auto_minor_version_upgrade
@@ -32,9 +34,12 @@ resource "aws_db_instance" "rds" {
   parameter_group_name          = var.db_parameter_group_name
   performance_insights_enabled  = var.db_performance_insights_enabled
   tags                          = var.tags
+  # checkov:skip=CKV_AWS_157:Single AZ okay for testing
   multi_az                      = var.db_multi_az
   # timezone                      = var.db_timezone  # FIXME: cannot specify timezone with postgres databases in RDS
   final_snapshot_identifier     = var.db_final_snapshot_identifier_prefix
+
+  enabled_cloudwatch_logs_exports = ["postgresql", "upgrade"]
 
   depends_on = [
     null_resource.enable_rds_instance,
@@ -46,7 +51,7 @@ resource "aws_db_instance" "rds" {
 }
 
 resource "aws_db_parameter_group" "rds_pg14_param_group" {
-  name   = "rds-cluster-pg"
+  name   = "rds-pg14-param-group"
   family = "postgres14"
 
   parameter {
@@ -88,6 +93,7 @@ resource "aws_secretsmanager_secret" "this" {
   name                    = var.secret_manager_name
   recovery_window_in_days = 7
   tags                    = var.tags
+  # checkov:skip=CKV_AWS_149: TODO: Ensure Secrets Manager secret is encrypted using KMS CMK
 }
 
 resource "aws_secretsmanager_secret_version" "this" {

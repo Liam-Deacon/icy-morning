@@ -1,8 +1,15 @@
+resource "aws_default_security_group" "default" {
+  vpc_id = aws_vpc.main.id
+}
+
 resource "aws_security_group" "lambda" {
   vpc_id = aws_vpc.main.id
   name   = "${local.tag_name}-lambda-sg"
 
+  description = "Allow outbound traffic from lambda"
+
   egress {
+    description = "Outbound"
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
@@ -13,6 +20,9 @@ resource "aws_security_group" "lambda" {
 resource "aws_security_group" "rds" {
   vpc_id = aws_vpc.main.id
   name   = "${local.tag_name}-rds-sg"
+  
+  description = "Allow inbound traffic to postgres server"
+
   ingress {
     description     = "PostgreSQL"
     from_port       = 5432
@@ -22,6 +32,7 @@ resource "aws_security_group" "rds" {
   }
 
   egress {
+    description = "Outbound"
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
