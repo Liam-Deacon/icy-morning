@@ -59,6 +59,14 @@ resource "aws_nat_gateway" "main" {
   }
 }
 
+# Track IP traffic logs
+resource "aws_flow_log" "aws_vpc_log" {
+  iam_role_arn    = aws_iam_role.test_role.arn  # FIXME: change to dedicated role
+  # log_destination = "log"
+  traffic_type    = "ALL"
+  vpc_id          = aws_vpc.main.id
+}
+
 // Output the subnet ids which will be used in the serverless.yml later
 output "subnet_private" {
   value = tolist(aws_subnet.private.*.id)
