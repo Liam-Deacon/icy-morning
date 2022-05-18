@@ -155,7 +155,7 @@ variable "db_character_set_name" {
 }
 
 variable "db_parameter_group_name" {
-  default = "default.postgres-14.1"
+  default = "rds_pg14_param_group"
 }
 
 

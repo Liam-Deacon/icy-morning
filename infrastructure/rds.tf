@@ -29,7 +29,7 @@ resource "aws_db_instance" "rds" {
   apply_immediately             = var.db_apply_immediately
   license_model                 = var.db_license_model
   port                          = var.db_port
-  # parameter_group_name          = var.db_parameter_group_name
+  parameter_group_name          = var.db_parameter_group_name
   performance_insights_enabled  = var.db_performance_insights_enabled
   tags                          = var.tags
   multi_az                      = var.db_multi_az
@@ -43,6 +43,22 @@ resource "aws_db_instance" "rds" {
     aws_secretsmanager_secret_version.this
 
   ]
+}
+
+resource "aws_db_parameter_group" "rds_pg14_param_group" {
+  name   = "rds-cluster-pg"
+  family = "postgres14"
+
+  parameter {
+    name = "log_statement"
+    value = "ddl"
+  }
+
+  parameter {
+    name = "log_min_duration_statement"
+    value = "1"
+  }
+
 }
 
 # create db subnet group
