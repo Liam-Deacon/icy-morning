@@ -22,6 +22,7 @@ init:
 
 clean:
 	rm -rf ../dist ../build/tmp/
+	rm -f api_gateway_custom_domain.tf
 
 create-archive: icy-morning-fast-api.zip
 
@@ -42,6 +43,9 @@ lint:
 
 test:
 	$(SERVERLESS_EXEC) invoke -f $(APP)
+
+api_gateway_custom_domain.tf:
+	cp ./templates/api_gateway_custom_domain.tf.tpl api_gateway_custom_domain.tf
 
 terraform_init:
 	$(TF_EXEC) init
