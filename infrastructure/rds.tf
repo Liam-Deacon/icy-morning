@@ -91,7 +91,7 @@ resource "random_password" "password" {
 # create secret and secret versions for database master account 
 resource "aws_secretsmanager_secret" "this" {
   name                    = var.secret_manager_name
-  recovery_window_in_days = 7
+  recovery_window_in_days = var.secret_manager_recovery_window_days
   tags                    = var.tags
   # checkov:skip=CKV_AWS_149: TODO: Ensure Secrets Manager secret is encrypted using KMS CMK
 }

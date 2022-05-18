@@ -332,3 +332,9 @@ variable "lambda_reserved_concurrent_operations" {
   type = number
   default = -1
 }
+
+variable "secret_manager_recovery_window_days" {
+  description = "The number of days a secret can be recovered for e.g. after deletion"
+  type = number
+  default = 0
+}
