@@ -338,3 +338,11 @@ variable "secret_manager_recovery_window_days" {
   type = number
   default = 0
 }
+
+variable "hosted_zone_domain" {
+  default = ""
+}
+
+variable "ses_domain" {
+  default = ""
+}
