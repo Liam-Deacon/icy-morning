@@ -22,8 +22,12 @@ resource "aws_s3_bucket" "lambda_bucket" {
 }
 
 resource "aws_s3_bucket_versioning" "lambda_bucket_versioning" {
-  enabled = true
+  # enabled = true
   bucket = aws_s3_bucket.lambda_bucket
+
+  versioning_configuration {
+
+  }
 }
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "lambda_bucket_encryption" {
