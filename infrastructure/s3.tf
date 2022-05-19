@@ -12,18 +12,22 @@ resource "aws_s3_bucket" "lambda_bucket" {
   # checkov:skip=CKV_AWS_144:Cross region replication is not needed for testing
   # checkov:skip=CKV_AWS_145:TODO: Ensure that S3 buckets are encrypted with KMS by default
 
-  versioning {
-    enabled = true
-  }
-
   # checkov:skip=CKV_AWS_18:TODO: configure bucket to log to
   # logging {
   # #   target_bucket = var.target_bucket
   # #   target_prefix = "log/${var.s3_bucket_name}"
   # }
+
+  # checkov:skip=CKV_AWS_21:Versioning is now in separate resource
+}
+
+resource "aws_s3_bucket_versioning" "lambda_bucket_versioning" {
+  enabled = true
+  bucket = aws_s3_bucket.lambda_bucket
 }
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "lambda_bucket_encryption" {
+  bucket = aws_s3_bucket.lambda_bucket
   rule {
       apply_server_side_encryption_by_default {
         sse_algorithm = "AES256"

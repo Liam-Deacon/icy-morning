@@ -5,6 +5,10 @@ resource "random_pet" "sqs_queue_name" {
 
 resource "aws_sqs_queue" "icy_morning_sqs" {
   name = random_pet.sqs_queue_name.id
+
+  # checkov:skip=CKV_AWS_27:FIXME: Ensure all data stored in the SQS queue is encrypted
+#   kms_master_key_id                 = "alias/aws/sqs"
+#   kms_data_key_reuse_period_seconds = 300
 }
 
 resource "aws_sqs_queue_policy" "icy_morning_sqs_policy" {
