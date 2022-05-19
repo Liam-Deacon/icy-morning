@@ -16,20 +16,19 @@ resource "aws_s3_bucket" "lambda_bucket" {
     enabled = true
   }
 
-
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm = "AES256"
-      }
-    }
-  }
-
   # checkov:skip=CKV_AWS_18:TODO: configure bucket to log to
   # logging {
   # #   target_bucket = var.target_bucket
   # #   target_prefix = "log/${var.s3_bucket_name}"
   # }
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "lambda_bucket_encryption" {
+  rule {
+      apply_server_side_encryption_by_default {
+        sse_algorithm = "AES256"
+      }
+  }
 }
 
 resource "aws_s3_bucket_public_access_block" "lambda_bucket_public_access" {

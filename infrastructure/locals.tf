@@ -4,7 +4,7 @@ locals {
   tag_name = "${var.project_name}-${var.stage}"
 
   sso_secrets = jsondecode(
-    data.aws_secretsmanager_secret_version.icy_morning_rds_secrets_version.secret_string
+    data.aws_secretsmanager_secret_version.icy_morning_rds_secret_version.secret_string
   )
 
   use_custom_domain = var.route53_root_domain_name != ""
