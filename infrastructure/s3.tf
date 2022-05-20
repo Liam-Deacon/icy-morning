@@ -6,7 +6,6 @@ resource "random_pet" "lambda_bucket_name" {
 # This is the bucket where the lambda will be stored.
 resource "aws_s3_bucket" "lambda_bucket" {
   bucket        = random_pet.lambda_bucket_name.id
-  acl           = "private"
   force_destroy = true
 
   # checkov:skip=CKV_AWS_144:Cross region replication is not needed for testing
@@ -26,8 +25,13 @@ resource "aws_s3_bucket_versioning" "lambda_bucket_versioning" {
   bucket = aws_s3_bucket.lambda_bucket
 
   versioning_configuration {
-
+    status = "Enabled"
   }
+}
+
+resource "aws_s3_bucket_acl" "lambda_bucket_acl" {
+  bucket = aws_s3_bucket.lambda_bucket
+  acl    = "private"
 }
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "lambda_bucket_encryption" {
