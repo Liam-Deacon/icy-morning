@@ -4,18 +4,21 @@ data "aws_availability_zones" "available" {
 }
 
 resource "aws_vpc" "main" {
+  # checkov:skip=CKV2_AWS_11:TODO: Ensure VPC flow logging is enabled in all VPCs
   cidr_block           = var.cidr_block_vpc
   enable_dns_support   = true
   enable_dns_hostnames = true
+
   tags = {
     name = local.tag_name
   }
 }
 
 resource "aws_subnet" "public" {
+  # checkov:skip=CKV_AWS_130:TODO: Resolve "Ensure VPC subnets do not assign public IP by default"
   cidr_block              = var.cidr_block_subnet_public
   vpc_id                  = aws_vpc.main.id
-  availability_zone       = data.aws_availability_zones.available.names[0]
+  availability_zone       = "${var.aws_region}a"  # data.aws_availability_zones.available.names[0]
   map_public_ip_on_launch = true
   tags = {
     name = "${local.tag_name}-public"
@@ -30,7 +33,7 @@ resource "aws_subnet" "private" {
 
   cidr_block        = var.cidr_block_subnets_private[count.index]
   vpc_id            = aws_vpc.main.id
-  availability_zone = data.aws_availability_zones.available.names[count.index]
+  availability_zone = "${var.aws_region}b"  # data.aws_availability_zones.available.names[count.index]
   tags = {
     name = "${local.tag_name}-private-${count.index}"
   }
@@ -45,6 +48,8 @@ resource "aws_internet_gateway" "main" {
 
 // NAT gateway requires an elastic ip
 resource "aws_eip" "public" {
+  # checkov:skip=CKV2_AWS_19:FIXME: Ensure that all EIP addresses allocated to a VPC are attached to EC2 instances
+
   tags = {
     name = local.tag_name
   }
@@ -58,6 +63,14 @@ resource "aws_nat_gateway" "main" {
     name = local.tag_name
   }
 }
+
+# Track IP traffic logs
+# resource "aws_flow_log" "aws_vpc_log" {
+#   iam_role_arn    = aws_iam_role.lambda_role.arn  # FIXME: change to dedicated role
+#   # log_destination = "log"
+#   traffic_type    = "ALL"
+#   vpc_id          = aws_vpc.main.id
+# }
 
 // Output the subnet ids which will be used in the serverless.yml later
 output "subnet_private" {

@@ -66,6 +66,10 @@ Place your `ca.crt`, `certificate.crt` and `certificate.key` files for your cust
 - `api_gateway_domain`
 - `api_gateway_certificate_name`
 
+Finally do a `make api_gateway_custom_domain.tf` to add the configuration to Terraform. Remove with `make clean`.
+
+> NOTE: This feature is currently untested.
+
 ## Development
 
 Development is assumed to be in a Linux environment with the following tools available:

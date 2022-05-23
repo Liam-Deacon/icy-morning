@@ -22,6 +22,7 @@ init:
 
 clean:
 	rm -rf ../dist ../build/tmp/
+	rm -f api_gateway_custom_domain.tf
 
 create-archive: icy-morning-fast-api.zip
 
@@ -40,8 +41,15 @@ fmt:
 lint:
 	$(TF_EXEC) fmt -check -recursive -diff
 
-test:
-	$(SERVERLESS_EXEC) invoke -f $(APP)
+check:
+	$(TF_EXEC) init 1>/dev/null 2>/dev/null
+	$(TF_EXEC) plan -var basic_auth_password=changeme -var basic_auth_username=testuser
+
+test: init
+	checkov --framework terraform -d .
+
+api_gateway_custom_domain.tf:
+	cp ./templates/api_gateway_custom_domain.tf.tpl api_gateway_custom_domain.tf
 
 terraform_init:
 	$(TF_EXEC) init
@@ -50,7 +58,7 @@ terraform_deploy: create-archive
 	$(TF_EXEC) apply
 
 terraform_destroy:
-	$(TF_EXEC) destroy -var=\"stage=dev\"
+	$(TF_EXEC) destroy -var basic_auth_username= -var basic_auth_password=
 
 serverless_deploy:
 	$(SERVERLESS_EXEC) deploy -f $(APP) --stage dev
